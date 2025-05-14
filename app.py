@@ -4,6 +4,8 @@ from langchain.prompts import PromptTemplate
 import boto3
 import os
 import streamlit as st
+import streamlit.components.v1 as components
+
 
 
 aws_access_key = os.getenv("AWS_ACCESS_KEY_ID")
@@ -19,6 +21,23 @@ bedrock_client = boto3.client(
 
 st.set_page_config(page_title="AI Chatbot", layout="centered")
 st.title("Bedrock Chatbot")
+
+
+
+components.html(
+    """
+   <script
+        src="https://cdn.jsdelivr.net/gh/logspace-ai/langflow-embedded-chat@v1.0.7/dist/build/static/js/bundle.min.js">
+    </script>
+    <langflow-chat
+        window_title="Simple Basic Prompting"
+        flow_id="4369a77a-d78a-45cc-be4d-89e20333bdd7"
+        host_url="https://astra.datastax.com">
+    </langflow-chat>
+    """,
+    height=600,
+    scrolling=True
+)
 
 model_id = st.sidebar.selectbox("Select Model", ["anthropic.claude-v2", "anthropic.claude-v3"])
 
@@ -53,4 +72,6 @@ if st.sidebar.button("Get Response") and freeform_text:
     st.write(response['text'])
 else:
     st.info("Please enter a question in the sidebar to get started.")
+
+
 
